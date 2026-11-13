@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>NOIM 構成図</title>
+<style>
+body { margin: 0; font-family: sans-serif; font-size: 14px; color: #222; }
+header { padding: 8px 14px; background: #1f2d3d; color: #fff; }
+header h1 { margin: 0 0 6px 0; font-size: 18px; }
+.chips span, .chips button { display: inline-block; margin: 0 8px 2px 0; padding: 2px 8px; border-radius: 10px; background: #34495e; color: #fff; font: inherit; border: 2px solid transparent; }
+.chips button { cursor: pointer; }
+.chips button:hover { border-color: #9fb3c8; }
+.chips button.on { border-color: #fff; background: #1b6ca8; box-shadow: 0 0 0 1px #fff inset; }
+.chips button.off { opacity: 0.55; text-decoration: line-through; }
+.chips button:disabled { cursor: default; opacity: 0.5; }
+.chips .alarm { background: #b03a2e; }
+.chips button.alarm.on { background: #8e2a20; }
+.chips .hint { background: none; color: #9fb3c8; font-size: 12px; padding: 0; }
+.notes { padding: 6px 14px; }
+.notes details { margin: 4px 0; padding: 4px 8px; border-radius: 4px; }
+.notes .warn { background: #fff4d6; border: 1px solid #e0b100; }
+.notes .unm { background: #fde8e8; border: 1px solid #d62728; }
+.notes ul { margin: 4px 0 4px 18px; padding: 0; }
+.notes summary { cursor: pointer; font-weight: bold; }
+#main { display: flex; height: calc(100vh - 190px); min-height: 480px; }
+#graph { flex: 1; background: #f7f9fb; border-top: 1px solid #ccd; cursor: grab; }
+#side { width: 340px; overflow: auto; padding: 8px 12px; border-left: 1px solid #ccd; box-sizing: border-box; }
+#side h2 { font-size: 15px; margin: 10px 0 4px 0; }
+.legend div { margin: 2px 0; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 6px; margin-right: 6px; vertical-align: middle; border: 1px solid #556; }
+.line { display: inline-block; width: 30px; border-top: 3px solid #667; margin-right: 6px; vertical-align: middle; }
+.line.lsp { border-top: 3px dashed #667; }
+.alarm-item { margin: 3px 0; padding: 3px 6px; border-left: 4px solid #999; background: #f4f4f4; }
+.alarm-item.rec { opacity: 0.45; }
+.link { color: #1a5fb4; cursor: pointer; text-decoration: underline; }
+.small { color: #556; font-size: 12px; }
+text.label { font-size: 9px; fill: #222; pointer-events: none; text-anchor: middle; paint-order: stroke; stroke: #f7f9fb; stroke-width: 3px; }
+.node { cursor: pointer; }
+text.grouptitle { font-size: 13px; font-weight: bold; fill: #556; }
+</style>
+</head>
+<body>
+<header>
+<h1>NOIM 構成図</h1>
+<div class="chips" id="chips"></div>
+</header>
+<div class="notes" id="notes"></div>
+<div id="main">
+<svg id="graph" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet">
+<g id="edges"></g>
+<g id="nodes"></g>
+</svg>
+<div id="side">
+<div class="legend">
+<h2>凡例</h2>
+<div><span class="dot" style="background:#d62728"></span>重大度3(重度・発生中)</div>
+<div><span class="dot" style="background:#f28c00"></span>重大度2(中度・発生中)</div>
+<div><span class="dot" style="background:#f2c200"></span>重大度1(軽度・発生中)</div>
+<div><span class="dot" style="background:#8fa3b8"></span>発生中のアラームなし(復旧済みのみを含む)</div>
+<div><span class="line"></span>物理接続(実線)</div>
+<div><span class="line lsp"></span>LSP接続(点線)</div>
+<div class="small">ドラッグで移動、ホイールで拡大縮小、装置・線のクリックで詳細。上部のボタン: 装置=全体表示に戻す、物理接続・LSP接続=線の表示/非表示、アラーム装置・接続なし=注目、警告=一覧の開閉。</div>
+</div>
+<div id="detail"></div>
+</div>
+</div>
+<script id="viz-data" type="application/json">{"devices":[{"id":"efe04921-89e5-4f42-a3a2-df24efb0c871","name":"PT_ADD7_L3VPN_0167_1","type":"CE","severity":0,"label":"PT_ADD7_L3VP\u2026","isolated":true,"x":140.0,"y":100.0,"alarms":[]},{"id":"0e045df7-65fe-4be3-a527-ea5d14081073","name":"PT_ADD7_0300_L2_A_1","type":"CE","severity":0,"label":"PT_ADD7_0300\u2026","isolated":true,"x":140.0,"y":164.0,"alarms":[]},{"id":"4fbccaa5-7c93-40b5-bd8e-196a99e52df0","name":"\u30a2\u30d0\u30f3\u30b6SAS2-01-A_\u30a2\u30d0\u30f3\u30b6CER1-A01","type":"SAS2","severity":1,"label":"\u30a2\u30d0\u30f3\u30b6SAS2-01-\u2026","isolated":false,"x":1429.1,"y":643.0,"alarms":[{"alarmId":"ALM-00003","alarmName":"\u96fb\u6e90\u96fb\u5727\u4f4e\u4e0b","alarmLevel":1,"occurredAt":"2026-11-05T08:30:00+09:00","status":"active"}]},{"id":"d18d5d8c-c3b3-48c0-b5c8-b1c4a5ce5e64","name":"\u95a2\u897f\u30fbCOM\u4eac\u90fd\u5357RR2-A","type":"RR2","severity":2,"label":"\u95a2\u897f\u30fbCOM\u4eac\u90fd\u5357RR2\u2026","isolated":false,"x":1309.6,"y":113.2,"alarms":[{"alarmId":"ALM-00002","alarmName":"\u901a\u4fe1\u65ad","alarmLevel":2,"occurredAt":"2026-11-05T09:45:10+09:00","status":"active"}]},{"id":"86e7c183-6aea-493b-a92e-74aa90c85ba0","name":"\u95a2\u897f\u30fbCOM\u6d6a\u901fRR2-A","type":"RR2","severity":0,"label":"\u95a2\u897f\u30fbCOM\u6d6a\u901fRR2-\u2026","isolated":false,"x":1199.5,"y":185.4,"alarms":[]},{"id":"957cb888-f4e8-409c-9e2d-055d80d2f34d","name":"\u30a2\u30d0\u30f3\u30b6SAS2-01-B_\u30a2\u30d0\u30f3\u30b6CER1-B01","type":"SAS2","severity":0,"label":"\u30a2\u30d0\u30f3\u30b6SAS2-01-\u2026","isolated":false,"x":861.7,"y":649.4,"alarms":[]},{"id":"469fc51e-e9d4-41ee-8af1-ffa84c363e26","name":"\u95a2\u897f\u30fb\u30a2\u30d0\u30f3\u30b6CER1-A","type":"CER1","severity":3,"label":"\u95a2\u897f\u30fb\u30a2\u30d0\u30f3\u30b6CER1-\u2026","isolated":false,"x":1246.6,"y":645.3,"alarms":[{"alarmId":"ALM-00001","alarmName":"\u6e29\u5ea6\u7570\u5e38","alarmLevel":3,"occurredAt":"2026-11-05T09:12:30+09:00","status":"active"},{"alarmId":"ALM-00004","alarmName":"\u30d5\u30a1\u30f3\u56de\u8ee2\u6570\u4f4e\u4e0b","alarmLevel":2,"occurredAt":"2026-11-05T10:05:47+09:00","status":"recovered"}]},{"id":"67b2c15e-bd06-4163-9b01-f633f6b16efb","name":"\u95a2\u897f\u30fb\u30a2\u30d0\u30f3\u30b6CER1-B","type":"CER1","severity":0,"label":"\u95a2\u897f\u30fb\u30a2\u30d0\u30f3\u30b6CER1-\u2026","isolated":false,"x":1043.9,"y":647.6,"alarms":[]},{"id":"3e5124b5-51a3-4f4e-b1a0-f442ada2fd11","name":"\u6885\u7530DTSAS2-01-A_\u6885\u7530DTCER2-A01","type":"SAS2","severity":0,"label":"\u6885\u7530DTSAS2-01-\u2026","isolated":false,"x":724.9,"y":238.9,"alarms":[]},{"id":"59e2c261-42a1-4e5d-be21-3674af00ed27","name":"\u6885\u7530DTSAS2-02-A_\u6885\u7530DTCER2-A02","type":"SAS2","severity":0,"label":"\u6885\u7530DTSAS2-02-\u2026","isolated":false,"x":550.0,"y":198.2,"alarms":[]},{"id":"a7cc6935-b805-4bd9-82ce-f2d36861d4f6","name":"\u95a2\u897f\u30fb\u8c37\u753a\u30d3\u30ebCER1-A","type":"CER1","severity":0,"label":"\u95a2\u897f\u30fb\u8c37\u753a\u30d3\u30ebCER1-\u2026","isolated":false,"x":939.7,"y":117.3,"alarms":[]},{"id":"26c3471e-8d00-4e6a-a9d4-73475bd6d968","name":"\u95a2\u897f\u30fb\u8c37\u753a\u30d3\u30ebCER1-B","type":"CER1","severity":0,"label":"\u95a2\u897f\u30fb\u8c37\u753a\u30d3\u30ebCER1-\u2026","isolated":false,"x":1027.9,"y":77.2,"alarms":[{"alarmId":"ALM-00005","alarmName":"\u96fb\u6e90\u96fb\u5727\u4f4e\u4e0b","alarmLevel":1,"occurredAt":"2026-11-05T07:50:00+09:00","status":"recovered"}]},{"id":"6ee17c56-1612-442c-819d-b52c009dd8cc","name":"\u95a2\u897f\u30fbCOM\u4eac\u90fd\u5357CR2-A","type":"CR2","severity":0,"label":"\u95a2\u897f\u30fbCOM\u4eac\u90fd\u5357CR2\u2026","isolated":false,"x":1091.9,"y":126.9,"alarms":[]},{"id":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","name":"\u95a2\u897f\u30fb\u6885\u7530DTCER2-A","type":"CER2","severity":0,"label":"\u95a2\u897f\u30fb\u6885\u7530DTCER2-\u2026","isolated":false,"x":779.0,"y":198.6,"alarms":[]},{"id":"5a7951a9-3718-4725-a49e-3d2b5da9bca1","name":"\u95a2\u897f\u30fb\u6885\u7530DTCER2-B","type":"CER2","severity":0,"label":"\u95a2\u897f\u30fb\u6885\u7530DTCER2-\u2026","isolated":false,"x":869.6,"y":157.6,"alarms":[]},{"id":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","name":"\u95a2\u897f\u30fbCOM\u6d6a\u901fCR2-A","type":"CR2","severity":0,"label":"\u95a2\u897f\u30fbCOM\u6d6a\u901fCR2-\u2026","isolated":false,"x":1011.9,"y":167.9,"alarms":[]},{"id":"f52ee706-16f1-44fc-81d8-1ef74eb6d6a4","name":"\u6885\u7530DTCE-A","type":"CE","severity":0,"label":"\u6885\u7530DTCE-A","isolated":true,"x":140.0,"y":228.0,"alarms":[]},{"id":"29739b4c-f3f7-4324-9c74-46f5f33c12e6","name":"PT_ADD_L3VPN_8-10A","type":"CE","severity":0,"label":"PT_ADD_L3VPN\u2026","isolated":true,"x":140.0,"y":292.0,"alarms":[]},{"id":"5473a8b9-0ae5-41ab-9b40-81f02b4406ca","name":"PT_ADD_L3VPN_8-9A","type":"CE","severity":0,"label":"PT_ADD_L3VPN\u2026","isolated":true,"x":140.0,"y":356.0,"alarms":[]},{"id":"e469bc52-cf0a-4c7e-89c9-049bef5e0d9e","name":"\u8c37\u753aCER1_B_L3_1","type":"CE","severity":0,"label":"\u8c37\u753aCER1_B_L3_\u2026","isolated":true,"x":140.0,"y":420.0,"alarms":[]},{"id":"805b7331-0106-4fea-a62c-b35fc99b1e3c","name":"\u8c37\u753aCER1_A_L2_4","type":"CE","severity":0,"label":"\u8c37\u753aCER1_A_L2_\u2026","isolated":true,"x":300.0,"y":100.0,"alarms":[]},{"id":"97088d41-f4e0-4adc-a435-a8d3aa840a12","name":"\u8c37\u753aCER1_A_L2_3","type":"CE","severity":0,"label":"\u8c37\u753aCER1_A_L2_\u2026","isolated":true,"x":300.0,"y":164.0,"alarms":[]},{"id":"eb0066fb-41f5-4302-8680-b90cc5eb6d0c","name":"\u8c37\u753aCER1_A_L2_2","type":"CE","severity":0,"label":"\u8c37\u753aCER1_A_L2_\u2026","isolated":true,"x":300.0,"y":228.0,"alarms":[]},{"id":"bd73778e-e185-42e1-84f6-fafcd7336804","name":"\u8c37\u753aCER1_A_L2_1","type":"CE","severity":0,"label":"\u8c37\u753aCER1_A_L2_\u2026","isolated":true,"x":300.0,"y":292.0,"alarms":[]},{"id":"b52d8a6d-10bd-45a7-839b-a9bf14c8f640","name":"\u6885\u7530CER2_B_L2_1","type":"CE","severity":0,"label":"\u6885\u7530CER2_B_L2_\u2026","isolated":true,"x":300.0,"y":356.0,"alarms":[]},{"id":"af9a730c-18a3-4212-a671-21cd3f11eda3","name":"\u8c37\u753aCER1_A_L3_1","type":"CE","severity":0,"label":"\u8c37\u753aCER1_A_L3_\u2026","isolated":true,"x":300.0,"y":420.0,"alarms":[]}],"edges":[{"source":"86e7c183-6aea-493b-a92e-74aa90c85ba0","target":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","kind":"physical","count":2,"names":["00NANI2A_Port 1/2/1_00NANI2A_Port 3/1/c1/1","00NANI2A_Port 1/1/1_00NANI2A_Port 2/1/c1/1"]},{"source":"469fc51e-e9d4-41ee-8af1-ffa84c363e26","target":"4fbccaa5-7c93-40b5-bd8e-196a99e52df0","kind":"physical","count":2,"names":["24DOAB1A_Port 6/1/5_DOABSAS201ADOAB1A01_Sat esat-1/1/u2","24DOAB1A_Port 6/1/4_DOABSAS201ADOAB1A01_Sat esat-1/1/u1"]},{"source":"67b2c15e-bd06-4163-9b01-f633f6b16efb","target":"957cb888-f4e8-409c-9e2d-055d80d2f34d","kind":"physical","count":4,"names":["24DOAB1B_Port 6/1/9_DOABSAS201BDOAB1B01_Sat esat-1/1/u3","24DOAB1B_Port 6/1/4_DOABSAS201BDOAB1B01_Sat esat-1/1/u1","24DOAB1B_Port 6/1/5_DOABSAS201BDOAB1B01_Sat esat-1/1/u2","24DOAB1B_Port 6/1/10_DOABSAS201BDOAB1B01_Sat esat-1/1/u4"]},{"source":"3e5124b5-51a3-4f4e-b1a0-f442ada2fd11","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"physical","count":2,"names":["24DTUM2A_Port 3/2/c2/1_DTUMSAS201ADTUM2A01_Sat esat-1/1/u1","24DTUM2A_Port 3/2/c2/2_DTUMSAS201ADTUM2A01_Sat esat-1/1/u2"]},{"source":"59e2c261-42a1-4e5d-be21-3674af00ed27","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"physical","count":4,"names":["24DTUM2A_Port 3/2/c9/3_DTUMSAS202ADTUM2A02_Sat esat-2/1/u3","24DTUM2A_Port 3/2/c9/1_DTUMSAS202ADTUM2A02_Sat esat-2/1/u1","24DTUM2A_Port 3/2/c9/4_DTUMSAS202ADTUM2A02_Sat esat-2/1/u4","24DTUM2A_Port 3/2/c9/2_DTUMSAS202ADTUM2A02_Sat esat-2/1/u2"]},{"source":"26c3471e-8d00-4e6a-a9d4-73475bd6d968","target":"a7cc6935-b805-4bd9-82ce-f2d36861d4f6","kind":"physical","count":1,"names":["24TANI1A_Port 1/1/1_24TANI1B_Port 1/1/1"]},{"source":"6ee17c56-1612-442c-819d-b52c009dd8cc","target":"d18d5d8c-c3b3-48c0-b5c8-b1c4a5ce5e64","kind":"physical","count":2,"names":["00KYOM2A_Port 1/2/1_00KYOM2A_Port 3/1/c1/1","00KYOM2A_Port 1/1/1_00KYOM2A_Port 2/1/c1/1"]},{"source":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","target":"a7cc6935-b805-4bd9-82ce-f2d36861d4f6","kind":"physical","count":1,"names":["00NANI2A_Port 5/2/c10/1_24TANI1A_Port 2/1/1"]},{"source":"6ee17c56-1612-442c-819d-b52c009dd8cc","target":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","kind":"physical","count":1,"names":["00KYOM2A_Port 1/1/c1/1_00NANI2A_Port 1/1/c1/1"]},{"source":"5a7951a9-3718-4725-a49e-3d2b5da9bca1","target":"6ee17c56-1612-442c-819d-b52c009dd8cc","kind":"physical","count":1,"names":["00KYOM2A_Port 5/2/c9/1_24DTUM2B_Port 2/1/c1/1"]},{"source":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"physical","count":1,"names":["00NANI2A_Port 5/2/c9/1_24DTUM2A_Port 2/1/c1/1"]},{"source":"469fc51e-e9d4-41ee-8af1-ffa84c363e26","target":"67b2c15e-bd06-4163-9b01-f633f6b16efb","kind":"physical","count":1,"names":["24DOAB1A_Port 1/1/c1/1_24DOAB1B_Port 1/1/c1/1"]},{"source":"5a7951a9-3718-4725-a49e-3d2b5da9bca1","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"physical","count":1,"names":["24DTUM2A_Port 1/1/c1/1_24DTUM2B_Port 1/1/c1/1"]},{"source":"26c3471e-8d00-4e6a-a9d4-73475bd6d968","target":"6ee17c56-1612-442c-819d-b52c009dd8cc","kind":"physical","count":1,"names":["00KYOM2A_Port 5/2/c10/1_24TANI1B_Port 2/1/1"]},{"source":"6ee17c56-1612-442c-819d-b52c009dd8cc","target":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","kind":"lsp","count":1,"names":["Bundle-Ether12498_to_00NANI2A"]},{"source":"5a7951a9-3718-4725-a49e-3d2b5da9bca1","target":"6ee17c56-1612-442c-819d-b52c009dd8cc","kind":"lsp","count":1,"names":["Bundle-Ether12453_to_00KYOM2A"]},{"source":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","target":"a7cc6935-b805-4bd9-82ce-f2d36861d4f6","kind":"lsp","count":1,"names":["Bundle-Ether12454_to_00NANI2A"]},{"source":"26c3471e-8d00-4e6a-a9d4-73475bd6d968","target":"a7cc6935-b805-4bd9-82ce-f2d36861d4f6","kind":"lsp","count":1,"names":["Bundle-Ether12498_to_24TANI1B"]},{"source":"5a7951a9-3718-4725-a49e-3d2b5da9bca1","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"lsp","count":1,"names":["Bundle-Ether12498_to_24DTUM2B"]},{"source":"26c3471e-8d00-4e6a-a9d4-73475bd6d968","target":"6ee17c56-1612-442c-819d-b52c009dd8cc","kind":"lsp","count":1,"names":["Bundle-Ether12454_to_00KYOM2A"]},{"source":"8f6eb38e-3ebd-413e-8442-0df0e6006ed9","target":"94e2c2c9-8b56-4071-a431-d6d2ca76c85b","kind":"lsp","count":1,"names":["Bundle-Ether12453_to_00NANI2A"]},{"source":"469fc51e-e9d4-41ee-8af1-ffa84c363e26","target":"67b2c15e-bd06-4163-9b01-f633f6b16efb","kind":"lsp","count":1,"names":["Bundle-Ether12498_to_24DOAB1B"]}],"warnings":[],"unmatched":[],"summary":{"devices":26,"physical_edges":14,"lsp_edges":8,"alarm_devices":3,"isolated_devices":12,"severity_devices":{"1":1,"2":1,"3":1},"alarms":5,"active_alarms":3,"recovered_alarms":2,"unmatched_alarms":0,"warnings":0},"view":{"x":56.4,"y":17.2,"w":1460.1,"h":712.2},"isolated_title":{"x":96.4,"y":60.0,"count":12}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('viz-data').textContent);
+  var COLORS = {0: '#8fa3b8', 1: '#f2c200', 2: '#f28c00', 3: '#d62728'};
+  var LEVEL_TEXT = {1: '軽度', 2: '中度', 3: '重度'};
+  var KIND_TEXT = {physical: '物理接続', lsp: 'LSP接続'};
+  var svg = document.getElementById('graph');
+  var NS = svg.namespaceURI;
+  var edgesG = document.getElementById('edges');
+  var nodesG = document.getElementById('nodes');
+  var detail = document.getElementById('detail');
+  var byId = {};
+  var nodeEls = {};
+  var edgeEls = [];
+  var selected = null;
+
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) { if (attrs.hasOwnProperty(k)) { e.setAttribute(k, attrs[k]); } }
+    if (parent) { parent.appendChild(e); }
+    return e;
+  }
+  function h(tag, text, parent, cls) {
+    var e = document.createElement(tag);
+    if (text !== undefined && text !== null) { e.textContent = text; }
+    if (cls) { e.className = cls; }
+    if (parent) { parent.appendChild(e); }
+    return e;
+  }
+  function shorten(s, n) { return s.length > n ? s.substring(0, n) + '…' : s; }
+
+  DATA.devices.forEach(function (d) { byId[d.id] = d; });
+
+  // 上部: サマリ(ボタンとして働く)
+  var S = DATA.summary;
+  var chips = document.getElementById('chips');
+  var hiddenKinds = {physical: false, lsp: false};
+  var focusMode = null;   // null | 'alarm' | 'isolated'
+  var chipEls = {};
+  function chip(key, text, cls, onClick, enabled) {
+    var b = h('button', text, chips, cls);
+    b.setAttribute('type', 'button');
+    b.setAttribute('aria-pressed', 'false');
+    b.setAttribute('data-chip', key);
+    if (!enabled) { b.disabled = true; }
+    b.addEventListener('click', function () { if (!b.disabled) { onClick(); } });
+    chipEls[key] = {el: b, cls: cls};
+    return b;
+  }
+  function setChip(key, pressed, off) {
+    var c = chipEls[key];
+    c.el.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    c.el.className = (c.cls ? c.cls + ' ' : '') + (pressed ? 'on' : '') + (off ? ' off' : '');
+  }
+  function isFocused(d) {
+    if (focusMode === 'alarm') { return d.severity > 0; }
+    if (focusMode === 'isolated') { return d.isolated; }
+    return true;
+  }
+  function applyState() {
+    edgeEls.forEach(function (x) {
+      x.path.style.display = hiddenKinds[x.edge.kind] ? 'none' : '';
+      var both = isFocused(byId[x.edge.source]) && isFocused(byId[x.edge.target]);
+      x.path.style.opacity = (focusMode && !both) ? '0.08' : '';
+    });
+    DATA.devices.forEach(function (d) {
+      nodeEls[d.id].g.style.opacity = isFocused(d) ? '' : '0.15';
+    });
+    setChip('physical', false, hiddenKinds.physical);
+    setChip('lsp', false, hiddenKinds.lsp);
+    setChip('alarm', focusMode === 'alarm', false);
+    setChip('isolated', focusMode === 'isolated', false);
+    setChip('devices', false, false);
+  }
+  function toggleKind(kind) { hiddenKinds[kind] = !hiddenKinds[kind]; applyState(); }
+  function toggleFocus(mode) { focusMode = (focusMode === mode) ? null : mode; applyState(); }
+  function resetAll() {
+    hiddenKinds = {physical: false, lsp: false};
+    focusMode = null;
+    vb = {x: INIT.x, y: INIT.y, w: INIT.w, h: INIT.h};
+    applyVb();
+    select(null);
+    showOverview();
+    applyState();
+  }
+  var warnBox = null, unmBox = null;
+  function toggleDetails(box) { if (box) { box.open = !box.open; } }
+
+  chip('devices', '装置 ' + S.devices, '', function () { resetAll(); }, true);
+  chip('physical', '物理接続 ' + S.physical_edges, '', function () { toggleKind('physical'); }, true);
+  chip('lsp', 'LSP接続 ' + S.lsp_edges, '', function () { toggleKind('lsp'); }, true);
+  chip('isolated', '接続なし ' + S.isolated_devices, S.isolated_devices > 0 ? 'alarm' : '',
+       function () { toggleFocus('isolated'); }, S.isolated_devices > 0);
+  chip('alarm', 'アラーム装置 ' + S.alarm_devices + '(重度 ' + S.severity_devices['3'] + ' / 中度 ' +
+       S.severity_devices['2'] + ' / 軽度 ' + S.severity_devices['1'] + ')', S.alarm_devices > 0 ? 'alarm' : '',
+       function () { toggleFocus('alarm'); }, S.alarm_devices > 0);
+  h('span', 'アラーム ' + S.alarms + '(発生中 ' + S.active_alarms + ' / 復旧済み ' + S.recovered_alarms + ')', chips, '');
+  chip('unmatched', '対応する装置のないアラーム ' + S.unmatched_alarms, S.unmatched_alarms > 0 ? 'alarm' : '',
+       function () { toggleDetails(unmBox); }, S.unmatched_alarms > 0);
+  chip('warnings', '警告 ' + S.warnings, '', function () { toggleDetails(warnBox); }, S.warnings > 0);
+
+  // 上部: 警告と、対応する装置のないアラーム
+  var notes = document.getElementById('notes');
+  if (DATA.warnings.length > 0) {
+    var dw = h('details', null, notes, 'warn'); dw.open = true; warnBox = dw;
+    h('summary', '警告(' + DATA.warnings.length + '件): 描けなかった接続など', dw);
+    var uw = h('ul', null, dw);
+    DATA.warnings.forEach(function (w) { h('li', w, uw); });
+  }
+  if (DATA.unmatched.length > 0) {
+    var du = h('details', null, notes, 'unm'); du.open = true; unmBox = du;
+    h('summary', '対応する装置のないアラーム(' + DATA.unmatched.length + '件)', du);
+    var uu = h('ul', null, du);
+    DATA.unmatched.forEach(function (a) {
+      h('li', a.alarmId + ' / ' + a.alarmName + ' / 重大度' + a.alarmLevel + ' / ' + a.status +
+        ' / 対象: ' + a.targetDeviceId + ' / ' + a.occurredAt, uu);
+    });
+  }
+
+  // 辺
+  function edgePath(e) {
+    var a = byId[e.source], b = byId[e.target];
+    if (e.kind === 'lsp') {
+      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      var dx = b.x - a.x, dy = b.y - a.y;
+      return 'M' + a.x + ' ' + a.y + ' Q' + (mx - dy * 0.15) + ' ' + (my + dx * 0.15) + ' ' + b.x + ' ' + b.y;
+    }
+    return 'M' + a.x + ' ' + a.y + ' L' + b.x + ' ' + b.y;
+  }
+  DATA.edges.forEach(function (e) {
+    var attrs = {d: edgePath(e), fill: 'none', stroke: e.kind === 'lsp' ? '#7a5fb0' : '#667',
+                 'stroke-width': 1.5 + Math.min(e.count, 5) * 0.5, 'stroke-opacity': 0.8, 'class': 'edge'};
+    if (e.kind === 'lsp') { attrs['stroke-dasharray'] = '7 5'; }
+    var p = el('path', attrs, edgesG);
+    var t = el('title', {}, p);
+    t.textContent = KIND_TEXT[e.kind] + ' ' + byId[e.source].name + ' - ' + byId[e.target].name + ' (' + e.count + '本)';
+    p.style.cursor = 'pointer';
+    p.addEventListener('click', function () { showEdge(e); });
+    edgeEls.push({edge: e, path: p});
+  });
+
+  // 装置
+  DATA.devices.forEach(function (d) {
+    var g = el('g', {'class': 'node', transform: 'translate(' + d.x + ',' + d.y + ')'}, nodesG);
+    var r = d.severity > 0 ? 15 : 10;
+    if (d.severity > 0) {
+      el('circle', {r: r + 5, fill: 'none', stroke: COLORS[d.severity], 'stroke-width': 3, 'stroke-opacity': 0.45}, g);
+    }
+    var c = el('circle', {r: r, fill: COLORS[d.severity], stroke: '#2c3e50', 'stroke-width': 1.5}, g);
+    var title = el('title', {}, g);
+    title.textContent = d.name + '(' + d.type + ')';
+    var label = el('text', {'class': 'label', y: r + 13}, g);
+    label.textContent = d.label;
+    nodeEls[d.id] = {g: g, circle: c};
+    enableDrag(g, d);
+  });
+
+  function refreshEdges() {
+    edgeEls.forEach(function (x) { x.path.setAttribute('d', edgePath(x.edge)); });
+  }
+
+  function toSvgPoint(ev) {
+    var pt = svg.createSVGPoint();
+    pt.x = ev.clientX; pt.y = ev.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+
+  function enableDrag(g, d) {
+    g.addEventListener('mousedown', function (ev) {
+      ev.stopPropagation();
+      var start = toSvgPoint(ev), ox = d.x, oy = d.y, moved = false;
+      function move(e2) {
+        var p = toSvgPoint(e2);
+        if (Math.abs(p.x - start.x) + Math.abs(p.y - start.y) > 3) { moved = true; }
+        d.x = ox + p.x - start.x; d.y = oy + p.y - start.y;
+        g.setAttribute('transform', 'translate(' + d.x + ',' + d.y + ')');
+        refreshEdges();
+      }
+      function up() {
+        window.removeEventListener('mousemove', move);
+        window.removeEventListener('mouseup', up);
+        if (!moved) { showDevice(d); }
+      }
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', up);
+    });
+  }
+
+  // 拡大縮小・パン(最初の表示は全体が収まる範囲)
+  var INIT = DATA.view;
+  var vb = {x: INIT.x, y: INIT.y, w: INIT.w, h: INIT.h};
+  function applyVb() { svg.setAttribute('viewBox', vb.x + ' ' + vb.y + ' ' + vb.w + ' ' + vb.h); }
+  svg.addEventListener('wheel', function (ev) {
+    ev.preventDefault();
+    var p = toSvgPoint(ev);
+    var f = ev.deltaY < 0 ? 0.85 : 1 / 0.85;
+    vb.x = p.x - (p.x - vb.x) * f; vb.y = p.y - (p.y - vb.y) * f;
+    vb.w *= f; vb.h *= f;
+    applyVb();
+  }, {passive: false});
+  svg.addEventListener('mousedown', function (ev) {
+    var start = toSvgPoint(ev), ox = vb.x, oy = vb.y;
+    function move(e2) {
+      var scale = vb.w / svg.getBoundingClientRect().width;
+      vb.x = ox - (e2.clientX - ev.clientX) * scale; vb.y = oy - (e2.clientY - ev.clientY) * scale;
+      applyVb();
+    }
+    function up() { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); }
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  });
+
+  // 詳細パネル
+  function alarmItem(a, parent) {
+    var it = h('div', null, parent, 'alarm-item' + (a.status === 'recovered' ? ' rec' : ''));
+    it.style.borderLeftColor = COLORS[a.alarmLevel];
+    h('div', a.alarmName + '(重大度' + a.alarmLevel + ' ' + LEVEL_TEXT[a.alarmLevel] + ')', it);
+    h('div', a.alarmId + ' / ' + (a.status === 'active' ? '発生中' : '復旧済み') + ' / ' + a.occurredAt, it, 'small');
+  }
+  function clear() { while (detail.firstChild) { detail.removeChild(detail.firstChild); } }
+  function select(id) {
+    if (selected && nodeEls[selected]) { nodeEls[selected].circle.setAttribute('stroke-width', 1.5); }
+    selected = id;
+    if (id && nodeEls[id]) { nodeEls[id].circle.setAttribute('stroke-width', 4); }
+  }
+  function deviceLink(id, parent) {
+    var a = h('span', byId[id].name, parent, 'link');
+    a.addEventListener('click', function () { showDevice(byId[id]); });
+  }
+  function backLink() {
+    var b = h('div', '← アラーム装置の一覧', detail, 'link small');
+    b.addEventListener('click', function () { select(null); showOverview(); });
+  }
+  function showDevice(d) {
+    select(d.id);
+    clear();
+    backLink();
+    h('h2', d.name, detail);
+    h('div', '種別: ' + d.type, detail);
+    h('div', 'ID: ' + d.id, detail, 'small');
+    if (d.isolated) { h('div', '接続なし', detail, 'alarm-item'); }
+    h('h2', 'アラーム(' + d.alarms.length + '件)', detail);
+    if (d.alarms.length === 0) { h('div', 'なし', detail, 'small'); }
+    d.alarms.forEach(function (a) { alarmItem(a, detail); });
+    h('h2', '接続', detail);
+    var any = false;
+    DATA.edges.forEach(function (e) {
+      if (e.source !== d.id && e.target !== d.id) { return; }
+      any = true;
+      var other = e.source === d.id ? e.target : e.source;
+      var row = h('div', null, detail);
+      h('span', KIND_TEXT[e.kind] + ' ' + e.count + '本: ', row, 'small');
+      deviceLink(other, row);
+      h('div', e.names.join(' / '), row, 'small');
+    });
+    if (!any) {
+      h('div', d.isolated ? '接続なし(この装置につながる物理接続・LSP接続は、NOIM出力にありません)' : 'なし',
+        detail, 'small');
+    }
+  }
+  function showEdge(e) {
+    select(null);
+    clear();
+    backLink();
+    h('h2', KIND_TEXT[e.kind] + '(' + e.count + '本)', detail);
+    var row = h('div', null, detail);
+    deviceLink(e.source, row); h('span', ' - ', row); deviceLink(e.target, row);
+    h('h2', '接続名', detail);
+    e.names.forEach(function (n) { h('div', n, detail, 'small'); });
+  }
+  function showOverview() {
+    clear();
+    h('h2', '発生中のアラームがある装置', detail);
+    var list = DATA.devices.filter(function (d) { return d.severity > 0; });
+    list.sort(function (a, b) { return b.severity - a.severity; });
+    if (list.length === 0) { h('div', 'なし', detail, 'small'); }
+    list.forEach(function (d) {
+      var row = h('div', null, detail);
+      h('span', '重大度' + d.severity + ' ', row, 'small');
+      deviceLink(d.id, row);
+    });
+  }
+  if (DATA.isolated_title) {
+    var gt = el('text', {'class': 'grouptitle', x: DATA.isolated_title.x, y: DATA.isolated_title.y}, nodesG);
+    gt.textContent = '接続なし(' + DATA.isolated_title.count + ')';
+  }
+  applyVb();
+  applyState();
+  showOverview();
+})();
+</script>
+</body>
+</html>

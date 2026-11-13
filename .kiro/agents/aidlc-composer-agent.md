@@ -13,414 +13,6 @@ description: >
   Dispatched by the /aidlc orchestrator; never invoked directly by a stage.
 tools: ["read", "write", "shell"]
 includeMcpJson: true
-permissions:
-  rules:
-    - capability: shell
-      effect: allow
-      match:
-        - "aidlc engine *"
-        - "bun --version"
-    - capability: shell
-      effect: ask
-      match:
-        - "aidlc engine config set *"
-        - "aidlc engine adapter *"
-        - "aidlc*$*"
-        - "aidlc*`*"
-        - "aidlc*>*"
-        - "aidlc*<*"
-        - "aidlc*&*"
-        - "aidlc*@(*"
-        - "aidlc*@{*"
-        - "aidlc*\n*"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine *"
-        - "aidlc doctor"
-        - "aidlc doctor --verbose"
-        - "aidlc version"
-        - "aidlc --doctor"
-        - "aidlc --doctor --verbose"
-        - "aidlc --version"
-        - "aidlc status"
-        - "aidlc --status"
-        - "aidlc config --help"
-        - "aidlc config --show"
-        - "aidlc config --show --json"
-        - "aidlc config models --show"
-        - "aidlc config models --show --json"
-        - "aidlc config models --help"
-        - "aidlc config runtime --show"
-        - "aidlc config runtime --show --json"
-        - "aidlc config runtime --help"
-        - "aidlc config providers --show"
-        - "aidlc config providers --show --json"
-        - "aidlc config providers --help"
-        - "aidlc config trust --show"
-        - "aidlc config trust --show --json"
-        - "aidlc config trust --help"
-        - "aidlc config flags --show"
-        - "aidlc config flags --show --json"
-        - "aidlc config flags --help"
-        - "aidlc config project --show"
-        - "aidlc config project --show --json"
-        - "aidlc config project --help"
-        - "aidlc config flags --clear-bypass AIDLC_SKIP_ARTIFACT_GUARD --yes"
-        - "aidlc config flags --clear-bypass AIDLC_SKIP_REVISION_BACKSTOP --yes"
-        - "aidlc config flags --clear-bypass AIDLC_SKIP_SUMMARY_CONFIRMATION_GUARD --yes"
-        - "aidlc config flags --clear-bypass AIDLC_SKIP_HUMAN_PRESENCE_GUARD --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_ENSEMBLE_EVIDENCE --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_PLAN_APPROVAL_GUARD --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_REVIEWER_SCOPE_HOOK --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_REVIEW_FREEZE_HOOK --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_USAGE_TRACKING --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_SENSORS --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_LEARNINGS --yes"
-        - "aidlc config flags --clear-bypass AIDLC_DISABLE_SUMMARY_CONFIRMATION --yes"
-      exclude:
-        - "aidlc engine intent"
-        - "aidlc engine intent *"
-        - "aidlc engine space"
-        - "aidlc engine space *"
-        - "aidlc engine status"
-        - "aidlc engine status *"
-        - "aidlc engine now"
-        - "aidlc engine now *"
-        - "aidlc engine state"
-        - "aidlc engine state *"
-        - "aidlc engine audit"
-        - "aidlc engine audit *"
-        - "aidlc engine graph"
-        - "aidlc engine graph *"
-        - "aidlc engine runtime"
-        - "aidlc engine runtime *"
-        - "aidlc engine sensor"
-        - "aidlc engine sensor *"
-        - "aidlc engine swarm"
-        - "aidlc engine swarm *"
-        - "aidlc engine worktree"
-        - "aidlc engine worktree *"
-        - "aidlc engine jump"
-        - "aidlc engine jump *"
-        - "aidlc engine log"
-        - "aidlc engine log *"
-        - "aidlc engine learnings"
-        - "aidlc engine learnings *"
-        - "aidlc engine testing-posture"
-        - "aidlc engine testing-posture *"
-        - "aidlc engine validate"
-        - "aidlc engine validate *"
-        - "aidlc engine scope"
-        - "aidlc engine scope *"
-        - "aidlc engine config"
-        - "aidlc engine config *"
-        - "aidlc engine plugin"
-        - "aidlc engine plugin *"
-        - "aidlc engine knowledge"
-        - "aidlc engine knowledge *"
-        - "aidlc engine gen"
-        - "aidlc engine gen *"
-        - "aidlc engine workspace"
-        - "aidlc engine workspace *"
-        - "aidlc engine review-brief"
-        - "aidlc engine review-brief *"
-        - "aidlc engine orchestrate"
-        - "aidlc engine orchestrate *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine intent *"
-      exclude:
-        - "aidlc engine intent"
-        - "aidlc engine intent --json"
-        - "aidlc engine intent --quiet"
-        - "aidlc engine intent --no-color"
-        - "aidlc engine intent --yes"
-        - "aidlc engine intent --offline"
-        - "aidlc engine intent --verbose"
-        - "aidlc engine intent list"
-        - "aidlc engine intent list *"
-        - "aidlc engine intent --all"
-        - "aidlc engine intent --all *"
-        - "aidlc engine intent help"
-        - "aidlc engine intent help *"
-        - "aidlc engine intent -h"
-        - "aidlc engine intent -h *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine space *"
-      exclude:
-        - "aidlc engine space"
-        - "aidlc engine space --json"
-        - "aidlc engine space --quiet"
-        - "aidlc engine space --no-color"
-        - "aidlc engine space --yes"
-        - "aidlc engine space --offline"
-        - "aidlc engine space --verbose"
-        - "aidlc engine space list"
-        - "aidlc engine space list *"
-        - "aidlc engine space help"
-        - "aidlc engine space help *"
-        - "aidlc engine space -h"
-        - "aidlc engine space -h *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine status *"
-      exclude:
-        - "aidlc engine status"
-        - "aidlc engine status *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine now *"
-      exclude:
-        - "aidlc engine now"
-        - "aidlc engine now *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine state *"
-      exclude:
-        - "aidlc engine state get"
-        - "aidlc engine state get *"
-        - "aidlc engine state count"
-        - "aidlc engine state count *"
-        - "aidlc engine state resume"
-        - "aidlc engine state resume *"
-        - "aidlc engine state lookup"
-        - "aidlc engine state lookup *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine audit *"
-      exclude:
-        - "aidlc engine audit history"
-        - "aidlc engine audit history *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine graph *"
-      exclude:
-        - "aidlc engine graph artifacts"
-        - "aidlc engine graph artifacts *"
-        - "aidlc engine graph producers"
-        - "aidlc engine graph producers *"
-        - "aidlc engine graph consumers"
-        - "aidlc engine graph consumers *"
-        - "aidlc engine graph topo"
-        - "aidlc engine graph topo *"
-        - "aidlc engine graph cycles"
-        - "aidlc engine graph cycles *"
-        - "aidlc engine graph scope"
-        - "aidlc engine graph scope *"
-        - "aidlc engine graph validate-scope"
-        - "aidlc engine graph validate-scope *"
-        - "aidlc engine graph validate-grid"
-        - "aidlc engine graph validate-grid *"
-        - "aidlc engine graph ars"
-        - "aidlc engine graph ars *"
-        - "aidlc engine graph export"
-        - "aidlc engine graph export *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine runtime *"
-      exclude:
-        - "aidlc engine runtime read"
-        - "aidlc engine runtime read *"
-        - "aidlc engine runtime summary"
-        - "aidlc engine runtime summary *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine sensor *"
-      exclude:
-        - "aidlc engine sensor list"
-        - "aidlc engine sensor list *"
-        - "aidlc engine sensor describe"
-        - "aidlc engine sensor describe *"
-        - "aidlc engine sensor fire"
-        - "aidlc engine sensor fire *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine swarm *"
-      exclude:
-        - "aidlc engine swarm check"
-        - "aidlc engine swarm check *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine worktree *"
-      exclude:
-        - "aidlc engine worktree list"
-        - "aidlc engine worktree list *"
-        - "aidlc engine worktree verify"
-        - "aidlc engine worktree verify *"
-        - "aidlc engine worktree info"
-        - "aidlc engine worktree info *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine jump *"
-      exclude:
-        - "aidlc engine jump resolve"
-        - "aidlc engine jump resolve *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine log *"
-      exclude:
-        - "aidlc engine log answers"
-        - "aidlc engine log answers *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine learnings *"
-      exclude:
-        - "aidlc engine learnings surface"
-        - "aidlc engine learnings surface *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine testing-posture *"
-      exclude:
-        - "aidlc engine testing-posture resolve"
-        - "aidlc engine testing-posture resolve *"
-        - "aidlc engine testing-posture render"
-        - "aidlc engine testing-posture render *"
-        - "aidlc engine testing-posture verify"
-        - "aidlc engine testing-posture verify *"
-        - "aidlc engine testing-posture brief"
-        - "aidlc engine testing-posture brief *"
-        - "aidlc engine testing-posture reply"
-        - "aidlc engine testing-posture reply *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine validate *"
-      exclude:
-        - "aidlc engine validate outputs"
-        - "aidlc engine validate outputs *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine scope *"
-      exclude:
-        - "aidlc engine scope resolve-env"
-        - "aidlc engine scope resolve-env *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine config *"
-      exclude:
-        - "aidlc engine config get"
-        - "aidlc engine config get *"
-        - "aidlc engine config list"
-        - "aidlc engine config list *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine plugin *"
-      exclude:
-        - "aidlc engine plugin select"
-        - "aidlc engine plugin select --json"
-        - "aidlc engine plugin select --quiet"
-        - "aidlc engine plugin select --no-color"
-        - "aidlc engine plugin select --yes"
-        - "aidlc engine plugin select --offline"
-        - "aidlc engine plugin select --verbose"
-        - "aidlc engine plugin list"
-        - "aidlc engine plugin list *"
-        - "aidlc engine plugin validate"
-        - "aidlc engine plugin validate *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine knowledge *"
-      exclude:
-        - "aidlc engine knowledge list"
-        - "aidlc engine knowledge list *"
-        - "aidlc engine knowledge show"
-        - "aidlc engine knowledge show *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine gen *"
-      exclude:
-        - "aidlc engine gen stage-table"
-        - "aidlc engine gen stage-table *"
-        - "aidlc engine gen scope-table"
-        - "aidlc engine gen scope-table *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine workspace *"
-      exclude:
-        - "aidlc engine workspace detect"
-        - "aidlc engine workspace detect *"
-        - "aidlc engine workspace codekb"
-        - "aidlc engine workspace codekb *"
-        - "aidlc engine workspace codekb-scope-diff"
-        - "aidlc engine workspace codekb-scope-diff *"
-        - "aidlc engine workspace codekb-snapshot"
-        - "aidlc engine workspace codekb-snapshot *"
-        - "aidlc engine workspace codekb-publish"
-        - "aidlc engine workspace codekb-publish *"
-        - "aidlc engine workspace project-description"
-        - "aidlc engine workspace project-description *"
-        - "aidlc engine workspace document-input"
-        - "aidlc engine workspace document-input *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine review-brief *"
-      exclude:
-        - "aidlc engine review-brief review"
-        - "aidlc engine review-brief review *"
-        - "aidlc engine review-brief context"
-        - "aidlc engine review-brief context *"
-        - "aidlc engine review-brief summary"
-        - "aidlc engine review-brief summary *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc engine orchestrate *"
-      exclude:
-        - "aidlc engine orchestrate wait"
-        - "aidlc engine orchestrate wait *"
-        - "aidlc engine orchestrate team-board"
-        - "aidlc engine orchestrate team-board *"
-        - "aidlc engine orchestrate help"
-        - "aidlc engine orchestrate help *"
-    - capability: shell
-      effect: deny
-      match:
-        - "aidlc*$*"
-        - "aidlc*`*"
-        - "aidlc*>*"
-        - "aidlc*<*"
-        - "aidlc*&*"
-        - "aidlc*@(*"
-        - "aidlc*@{*"
-        - "aidlc*\n*"
-    - capability: fs_read
-      effect: allow
-      match:
-        - "**"
-    - capability: filesystem
-      effect: allow
-      match:
-        - "aidlc/spaces/*/intents/.aidlc-engine/composer-proposal.json"
-    - capability: fs_write
-      effect: deny
-      match:
-        - ".kiro/**"
-        - "aidlc/.aidlc-sessions/**"
-        - "aidlc/spaces/*/intents/*/.aidlc-engine/gate-words/**"
 ---
 <!-- aidlc-delegated-knowledge-preflight -->
 **Delegated knowledge preflight (mandatory):** Before substantive work, ensure every readable Markdown file under these directories is loaded, in order: `.kiro/knowledge/aidlc-shared/` (all but its format references `audit-format.md`, `knowledge-readme-template.md`, `memory-template.md`, `state-template.md` and `worktree-info-schema.md`: a step that needs one names it), `.kiro/knowledge/aidlc-composer-agent/`, `aidlc/spaces/<active-space>/knowledge/aidlc-shared/`, then `aidlc/spaces/<active-space>/knowledge/aidlc-composer-agent/`. A native resource preload satisfies this requirement; otherwise read the files now. Kiro shows only part of a long file: read each one with your file tool in parts of at most 200 lines (offset and limit), from the first line to the last; a read that comes back cut short is not all of it. The dispatch brief supplies rules and artifact paths separately.
@@ -578,17 +170,20 @@ Do NOT compute the composite, bands, or any downstream number yourself. Score
 the five components with cited evidence, then run:
 
 ```
-aidlc engine graph ars --iae <s> --csu <s> --ve <s> --r <s> --ua <s> [--completed <csv>] [--project-type <t>]
+aidlc engine graph ars --iae <s> --csu <s> --ve <s> --r <s> --ua <s> --method <codekb|fallback> [--completed <csv>] [--project-type <t>]
 ```
 
 and copy its numbers verbatim. The tool owns the weighted composite, the band
 labels, the per-stage EV screen against the cost priors, the nearest stock
-scopes by grid diff count, and the two pre-rendered gate tables. Pass
+scopes by grid diff count, and the two pre-rendered gate tables. `--method`
+is the structural evidence source Step 3 selects; the tool keeps the five
+scores and the method. Pass
 `--project-type` with the classification Stage 0.2 (Workspace Detection)
 recorded: a stage whose compiled `condition:` restricts it to one kind of
 project (today Reverse Engineering, brownfield-only) is then screened out on
-the other kind instead of being scored, so the mechanical screen never
-proposes a stage the stage's own condition would skip. Its formula
+the other kind instead of being scored, and Reverse Engineering runs on
+existing code whatever CSU scores, so the mechanical screen never contradicts
+the stage's own condition. Its formula
 (documented here; the data lives in `tools/data/ars-priors.json`):
 
 ```
@@ -782,7 +377,7 @@ target component is HIGH enough that reduction has meaningful value.
 | team-formation | UA | Multi-team coordination required |
 | rough-mockups | IAE, UA | UX is a primary concern and the change is user-facing |
 | approval-handoff | (phase gate) | Always at ideation→inception boundary |
-| reverse-engineering | CSU | CSU > 0.4 or brownfield with unfamiliar codebase. CodeKB coverage may justify proposing SKIP, with the disclosure the Economy Discipline fold requires (the human decides at the gate) |
+| reverse-engineering | CSU | Always on existing code, never on a new project: decided by project type, not by CSU, and the stage's own check of the code map it already has decides whether to scan. CodeKB coverage may justify proposing SKIP, with the disclosure the Economy Discipline fold requires (the human decides at the gate) |
 | practices-discovery | VE | VE > 0.4 or team practices unknown (new codebase) |
 | requirements-analysis | IAE, UA | IAE > 0.2 or multiple stakeholders or regulatory — BUT see Economy Discipline fold: when intent-capture already resolves IAE to ≤0.2, SKIP unless downstream EXECUTE stages (domain-design, functional-design) need its UNIQUE outputs (functional decomposition, constraints, out-of-scope) that intent-capture does not produce |
 | user-stories | IAE | User-facing change with multiple personas |
@@ -877,7 +472,7 @@ and name that trigger in the rationale.
 
 | Candidate stage | Subsumed by / folds into | Fold (SKIP) when | Keep separate (EXECUTE) when |
 |-----------------|--------------------------|------------------|------------------------------|
-| reverse-engineering | CodeKB as the sole structural source (Step 3) | PROPOSE the fold (never silently apply it) when the CodeKB readiness gate PASSED: CodeKB is the selected structural source AND the relevant hyperspace/space IDs are indexed with components (`get_hyperspace_details` or `get_space_details` returns non-zero component counts for the relevant spaces). The deep structural analysis (call graphs, dependency maps, component inventories, cross-package coupling) is ALREADY performed by CodeKB and was consumed during Step 3 scoring, so the CSU reduction reverse-engineering would deliver is largely captured. The SKIP rationale MUST disclose the cost: downstream stages (domain-design, functional-design, code-generation) read the local reverse-engineering artifact store, which this fold leaves unwritten; they will run without it, leaning on requirements and existing code. The human weighs that trade at the gate. | The fallback path was selected: CodeKB is NOT available, OR the relevant spaces/hyperspace are not indexed (zero components), OR the codebase changed significantly since the last CodeKB indexing (user signals stale index), OR the affected subgraph spans repositories/spaces NOT covered by the indexed CodeKB data, OR downstream EXECUTE stages need the persistent local RE artifacts (deep design work on an unfamiliar brownfield codebase) |
+| reverse-engineering | CodeKB as the sole structural source (Step 3) | PROPOSE the fold (never silently apply it) when the CodeKB readiness gate PASSED: CodeKB is the selected structural source AND the relevant hyperspace/space IDs are indexed with components (`get_hyperspace_details` or `get_space_details` returns non-zero component counts for the relevant spaces). The deep structural analysis (call graphs, dependency maps, component inventories, cross-package coupling) is ALREADY performed by CodeKB and was consumed during Step 3 scoring, so the CSU reduction reverse-engineering would deliver is largely captured. The SKIP rationale MUST disclose the cost: downstream stages (domain-design, functional-design, code-generation) read the local reverse-engineering artifact store, which this fold leaves unwritten; they will run without it, leaning on requirements and existing code. The human weighs that trade at the gate. | Every other case on existing code (the screen keeps it by project type), for example when the fallback path was selected: CodeKB is NOT available, OR the relevant spaces/hyperspace are not indexed (zero components), OR the codebase changed significantly since the last CodeKB indexing (user signals stale index), OR the affected subgraph spans repositories/spaces NOT covered by the indexed CodeKB data, OR downstream EXECUTE stages need the persistent local RE artifacts (deep design work on an unfamiliar brownfield codebase) |
 | feasibility | domain-design | the viability question is a known/standard pattern (e.g. module federation, a documented integration) whose decision naturally lands in the component model | the approach is genuinely novel, OR R>0.6 hinges on proving viability BEFORE committing to design |
 | rough-mockups | refined-mockups | the UI already exists (brownfield redesign) — one design pass grounded in current screens suffices | greenfield UI, OR divergent UX directions must be compared before investing in hi-fi |
 | user-stories | requirements-analysis | personas are known and requirements-analysis captures the acceptance criteria; refined-mockups carries the UX narrative | many distinct personas with conflicting journeys needing independent story-level tracking |
@@ -929,7 +524,8 @@ high-ARS intent from inflating to full ceremony.
 | Medium-High | 4 | reverse-engineering, domain-design, contract-design, functional-design, nfr-requirements, nfr-design, infrastructure-design, build-and-test |
 | High | 5 | code-generation, deployment-pipeline, environment-provisioning, deployment-execution, observability-setup, performance-validation |
 
-A stage with cost=4 is justified when its target ARS component is > 0.4.
+A stage with cost=4 is justified when its target ARS component is > 0.4
+(Reverse Engineering is decided by project type instead, Step 2.3).
 A stage with cost=2 is justified when its target ARS component is > 0.2.
 A stage with cost=1 is always justified if the component is non-zero.
 
@@ -1045,6 +641,11 @@ keep it as advisory evidence only. Route solely on
   that second result; require the selected stock scope to rank at `diff: 0`.
   The proposal is not ready until its grid, summary, distance, and rendered
   stage decisions all describe this same adopted stock grid.
+- Stage changes the dispatch names as the person's own (typed with their
+  request) are not flips you fold: keep them in every grid you propose and never
+  adopt a stock grid that undoes them (a near-stock grid with them is custom on
+  that scope), until the person changes them at the gate (then route as that
+  edit leaves the grid, Step 9).
 - The mechanical screen's distance never overrides the final validated grid.
   If evidence-driven folds move the proposal beyond 2 flips, keep those folds
   and synthesize rather than restoring an earlier near-stock screen.
@@ -1158,7 +759,7 @@ before the rename); the composer never flips it. Mark that row read-only in
 the rendered proposal: a recompose lands only `changes.skip` / `changes.add`,
 so a policy edit there would be discarded. Name the route instead: when the
 person asks to raise or lower it, the conductor runs
-`aidlc engine config set guard-policy <value> --person-words '<their words>'`, before any scope change
+`aidlc engine config set guard-policy <value> --message <id>` (`<id>` the message they asked in), before any scope change
 they also asked for. Changing scope alone never lowers the running policy.
 Pass `guardPolicy` to `validate-grid --guard-policy <value>` so the
 validator checks it with the grid. For a front composition the conductor
@@ -1361,8 +962,8 @@ deterministic `recompose` command. For `mode: "matched"` and `mode: "custom"`,
 the conductor creates the workflow on `scopeName` (matched) or `baseScope`
 (custom) with the typed `changes` and `creationSettings`, and the plan applies
 to that piece of work only. When the person picks "Approve and save as scope",
-the conductor asks for a name (your `scopeName` is the default) and runs the
-engine's `scope save`, which writes the scope from the running work's plan.
+the conductor asks for a name (your `scopeName` is the default) and the
+creation it runs saves the scope from the new work's plan (`--save-as`).
 
 ---
 
@@ -1408,7 +1009,7 @@ composing. You propose; the human decides; the deterministic validator guards.
 
 ## Files and commands
 
-Write and edit files yourself with your file tools, never through the shell (no heredoc, no `echo`, `printf`, or `python3` writing a file, no `sed -i`, no `mkdir`; the file-write tool creates any missing folder). A command the person asks for, or one the plan names (a package install, a build, a scaffolder, a migration, a formatter, a code generator, even a `mkdir`), still runs as written. Every file you make on your own, a scratch file, a helper script, a command's output, stays inside the project (nothing in /tmp or any folder outside it), and a command's output is read from the tool result, never sent to a file; a file the person asks for, or one the plan names, goes where they say. Quote a pattern meant for the program, not the shell (`--include='*.ts'`), and never start an argument with `=`: zsh, the macOS default shell, stops on both. Read, list, and search (your own knowledge files included) with your file tools where you have them; where the shell is your only way to read, use one plain read command (no `cd` before it, no pipe or second command after it). Run every AI-DLC command exactly as written, as a command of its own (no `cd` before it, no pipe or second command after it), keeping its path as written (never a full path): a shell line can stop and ask the person to approve it.
+Write and edit files yourself with your file tools, never through the shell (no heredoc, no `echo`, `printf`, or `python3` writing a file, no `sed -i`, no `mkdir`; the file-write tool creates any missing folder). A command the person asks for, or one the plan names (a package install, a build, a scaffolder, a migration, a formatter, a code generator, even a `mkdir`), still runs as written. Do not stash, reset, check out over, restore or clean the person's working tree, and do not install what the plan does not name: for a before-and-after comparison, run the check on the unchanged tree before you edit. Every file you make on your own, a scratch file, a helper script, a command's output, stays inside the project (nothing in /tmp or any folder outside it), and a command's output is read from the tool result, never sent to a file; a file the person asks for, or one the plan names, goes where they say. Quote a pattern meant for the program, not the shell (`--include='*.ts'`), and never start an argument with `=`: zsh, the macOS default shell, stops on both. Read, list, and search (your own knowledge files included) with your file tools where you have them; where the shell is your only way to read, use one plain read command (no `cd` before it, no pipe or second command after it). Run every AI-DLC command exactly as written, as a command of its own (no `cd` before it, no pipe or second command after it), keeping its path as written (never a full path): a shell line can stop and ask the person to approve it.
 
 ## Boundaries
 

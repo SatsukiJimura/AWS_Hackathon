@@ -1,4 +1,4 @@
-# Question Rendering — Kiro IDE harness annex
+# Question Rendering — Kiro CLI harness annex
 
 This file defines how THIS harness renders the structured questions that
 `.kiro/aidlc-common/protocols/stage-protocol.md` section "Structured questions" requires.
@@ -36,7 +36,7 @@ This applies to **every** structured-question site, including but not limited to
 - the ladder prompt (autonomy mode after the walking skeleton);
 - halt-and-ask on Bolt failure (Retry / Skip / Abort);
 - consolidated-summary confirmation before artifact generation;
-- the §13 learnings gate (keep / heading / promote-to-team).
+- the section 13 learnings question after a correction (keep for this project, for the team, or not).
 
 (Literal ` ```question ` fences legitimately remain in framework documentation
 like THIS file and the stage-protocol because they are authoring specs, not chat
@@ -47,7 +47,7 @@ prohibition is about echoing raw fences in live orchestration turns.)
 
 ## Mechanism
 
-Kiro IDE has no structured-question tool, so every structured question renders
+Kiro CLI has no structured-question tool, so every structured question renders
 as **numbered prose options in chat**, and the user answers with a number (or
 free text). Render the spec like this:
 
@@ -65,11 +65,11 @@ options:
 becomes:
 
 ```
-**Approval** — [Stage Name] complete. How would you like to proceed?
+**Approval** - [Stage Name] complete. How would you like to proceed?
 
-1. **Approve** — Continue to [next stage]
-2. **Request Changes** — Provide revision feedback
-3. **Other** — describe what you want instead
+1. **Approve** - Continue to [next stage]
+2. **Request Changes** - Provide revision feedback
+3. **Other** - describe what you want instead
 
 Reply with a number (or just tell me).
 ```
@@ -81,12 +81,12 @@ render with the synthesized Other escape as visible option `4`. It is asked only
 when the step asks for it. Render it like this:
 
 ```
-**Questions** — I've created [N] questions at `[file path]`. How would you like to answer them?
+**Questions** - I've created [N] questions at `[file path]`. How would you like to answer them?
 
-1. **Guide me** — Walk through each question interactively here
-2. **I'll edit the file** — I'll fill in the answers in the file directly
-3. **Chat** — Discuss freely — I'll extract decisions from our conversation
-4. **Other** — describe what you want instead
+1. **Guide me** - Walk through each question interactively here
+2. **I'll edit the file** - I'll fill in the answers in the file directly
+3. **Chat** - Discuss freely - I'll extract decisions from our conversation
+4. **Other** - describe what you want instead
 
 Reply with a number (or just tell me).
 ```
@@ -118,7 +118,7 @@ collapse its choices into Yes/No, add a recommendation, or run another tool or
 read state first: the question is the routing decision already.
 
 Every such render is invalid until its final displayed option is the next
-number followed by `**Other** — describe what you want instead`. A trailing sentence such as "or tell
+number followed by `**Other** - describe what you want instead`. A trailing sentence such as "or tell
 me" is not the Other option and must not replace it.
 
 A reply that picks a choice runs that choice's command, as the step says; a
@@ -143,11 +143,11 @@ confirm:
 ```
 - <each answer, as a summary bullet>
 
-**Confirm** — Does this all look correct before I generate the artifact?
+**Confirm** - Does this all look correct before I generate the artifact?
 
-1. **Looks correct** — Generate the artifact from these answers
-2. **Request changes** — Revise one or more answers before generation
-3. **Other** — describe what you want instead
+1. **Looks correct** - Generate the artifact from these answers
+2. **Request changes** - Revise one or more answers before generation
+3. **Other** - describe what you want instead
 
 Reply with a number (or just tell me).
 ```
@@ -182,6 +182,12 @@ Rules:
   gate (`report --result awaiting-approval` or `revised`), which includes any
   plan change made during the stage, else the run-stage directive's. Render
   `Complete workflow` when `next_stage` is null. Never guess the next stage.
+- **Approval gate Accept as-is**: that reply, or the step that shows the gate
+  again, says whether the gate offers a third option. With
+  `accept_as_is: "offered"`, add `Accept as-is` third and
+  name the round from `revision_cycle`; with `"next-revision"`, keep two options
+  and add the note that it comes after one more revision. Never count the
+  rounds yourself.
 - **Bold the header**, then the prompt, then the numbered options in spec
   order. When a question has a recommended option, list it FIRST and append
   "(Recommended)" to its label.

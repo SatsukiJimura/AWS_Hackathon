@@ -1,0 +1,1 @@
+"NOIM変換ツールを作る。要件は合意済みの .kiro/specs/noim-converter/requirements.md を入力として使う。NOIMの変換ルールは推測せず、設計書は後で渡す。"

@@ -1,0 +1,38 @@
+{
+  "stage": "code-generation",
+  "upstream_ids": [
+    "FR1.1", "FR1.2", "FR1.3",
+    "FR2.1", "FR2.2", "FR2.3", "FR2.4", "FR2.5",
+    "FR3.1", "FR3.2", "FR3.3",
+    "FR4.1", "FR4.2", "FR4.3", "FR4.4", "FR4.5",
+    "FR5.1",
+    "FR6.1", "FR6.2", "FR6.3",
+    "NFR1", "NFR2", "NFR3", "NFR4"
+  ],
+  "coverage": [
+    { "id": "FR1.1", "status": "OK", "target": "noim_viz/loader.py" },
+    { "id": "FR1.2", "status": "OK", "target": "noim_viz/loader.py" },
+    { "id": "FR1.3", "status": "OK", "target": "noim_viz/loader.py" },
+    { "id": "FR2.1", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR2.2", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR2.3", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR2.4", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR2.5", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR3.1", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR3.2", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR3.3", "status": "OK", "target": "アラーム/alarm_spec.md" },
+    { "id": "FR4.1", "status": "OK", "target": "noim_viz/html_out.py" },
+    { "id": "FR4.2", "status": "OK", "target": "noim_viz/layout.py" },
+    { "id": "FR4.3", "status": "OK", "target": "noim_viz/html_out.py" },
+    { "id": "FR4.4", "status": "OK", "target": "noim_viz/html_out.py" },
+    { "id": "FR4.5", "status": "OK", "target": "noim_viz/html_out.py" },
+    { "id": "FR5.1", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "FR6.1", "status": "OK", "target": "visualizer.py" },
+    { "id": "FR6.2", "status": "OK", "target": "noim_viz/layout.py" },
+    { "id": "FR6.3", "status": "OK", "target": "visualizer.py" },
+    { "id": "NFR1", "status": "OK", "target": "noim_viz/html_out.py" },
+    { "id": "NFR2", "status": "OK", "target": "tests/test_visualizer.py" },
+    { "id": "NFR3", "status": "OK", "target": "noim_viz/graph.py" },
+    { "id": "NFR4", "status": "OK", "target": "visualizer.py" }
+  ]
+}

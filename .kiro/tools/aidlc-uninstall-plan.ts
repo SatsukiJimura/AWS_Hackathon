@@ -19,7 +19,10 @@ import {
   installRoot,
   PLUGIN_CATALOGUE_RECORD,
   pluginCatalogueRoot,
+  readWindowsExeCommandMarker,
   versionsRoot,
+  WINDOWS_EXE_COMMAND_ASIDE,
+  windowsExeCommandPath,
   windowsPosixCommandPath,
   windowsPosixLauncherBodyIsOwned,
 } from "./aidlc-install-paths.ts";
@@ -467,8 +470,8 @@ export function buildUninstallPlan(purge: boolean): UninstallPlan {
   for (const path of catalogue.preserved) preserved.add(path);
 
   const known = [
-    "active-version", "active-executable", "rollback-version", "aidlc-shim.ps1", "windows-path.json",
-    ...(purge ? ["aidlc.settings.json", "update-check.json", "pins.json", "default-harness", "channel", "kiro-ide-workflows", "kiro-ide-settings-error-told", "kiro-ide-terminal"] : []),
+    "active-version", "active-executable", "rollback-version", "aidlc-shim.ps1", "windows-path.json", "launcher-sha256",
+    ...(purge ? ["aidlc.settings.json", "update-check.json", "pins.json", "default-harness", "channel", "kiro-ide-workflows", "kiro-cli-workflows", "kiro-ide-settings-error-told", "kiro-ide-terminal"] : []),
   ];
   for (const name of known) addFile(join(root, ...name.split("/")));
   for (const [shell, name] of Object.entries({
@@ -519,6 +522,24 @@ export function buildUninstallPlan(purge: boolean): UninstallPlan {
       preserved.add(resolved);
     }
   }
+  // bin\aidlc.exe when it is the copy AI-DLC wrote (the marker's sha256), and
+  // the replaced copies renamed aside beside it; another aidlc.exe is kept.
+  const exe = windowsExeCommandPath();
+  const exeBin = exe === null ? null : dirname(resolve(exe));
+  if (exeBin !== null && existsWithoutFollowing(exeBin) && noLinks(exeBin, resolve(binRoot()))) {
+    const marker = readWindowsExeCommandMarker();
+    for (const name of readdirSync(exeBin)) {
+      const path = join(exeBin, name);
+      if (name !== "aidlc.exe" && !WINDOWS_EXE_COMMAND_ASIDE.test(name)) continue;
+      const state = lstatSync(path).isFile() ? transactionState(path) : null;
+      if (state !== null && (name !== "aidlc.exe" || state === marker)) {
+        files.set(path, state);
+        if (within(path, root)) addParents(path);
+      } else {
+        preserved.add(path);
+      }
+    }
+  }
   for (const folder of ["completions", "reservations", "bin"]) {
     const path = join(root, folder);
     if (existsWithoutFollowing(path) && noLinks(path, root) && lstatSync(path).isDirectory()) {
@@ -530,7 +551,7 @@ export function buildUninstallPlan(purge: boolean): UninstallPlan {
     }
   }
   directories.add(root);
-  const keptSettings = new Set(["aidlc.settings.json", "update-check.json", "pins.json", "default-harness", "channel", "kiro-ide-workflows", "kiro-ide-settings-error-told", "kiro-ide-terminal"]);
+  const keptSettings = new Set(["aidlc.settings.json", "update-check.json", "pins.json", "default-harness", "channel", "kiro-ide-workflows", "kiro-cli-workflows", "kiro-ide-settings-error-told", "kiro-ide-terminal"]);
   for (const directory of directories) {
     if (within(directory, versions)) continue;
     if (!noLinks(directory, root)) {
