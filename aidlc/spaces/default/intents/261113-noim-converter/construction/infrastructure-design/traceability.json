@@ -1,0 +1,19 @@
+{
+  "stage": "infrastructure-design",
+  "upstream_ids": [
+    "NFR1",
+    "NFR2"
+  ],
+  "coverage": [
+    {
+      "id": "NFR1",
+      "status": "N/A",
+      "target": "標準ライブラリのみで動くため、追加のインフラは不要。EC2 は AL2023 標準の python3 だけを使う(infrastructure-specification.md の Deployment)"
+    },
+    {
+      "id": "NFR2",
+      "status": "OK",
+      "target": "infrastructure-specification.md: EC2(Amazon Linux 2023、t3.micro)と SSM Session Manager で、EC2 上で動かす構成にする"
+    }
+  ]
+}
